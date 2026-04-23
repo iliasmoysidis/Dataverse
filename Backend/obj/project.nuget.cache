@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "+2t+Rezrh5g=",
+  "dgSpecHash": "p0E6JwJ9L5g=",
   "success": true,
   "projectFilePath": "/home/ilias/VSCodeProjects/Dataverse/Backend/Backend.csproj",
   "expectedPackageFiles": [
     "/home/ilias/.nuget/packages/bcrypt.net-next/4.1.0/bcrypt.net-next.4.1.0.nupkg.sha512",
     "/home/ilias/.nuget/packages/fluentvalidation/12.1.1/fluentvalidation.12.1.1.nupkg.sha512",
+    "/home/ilias/.nuget/packages/fluentvalidation.aspnetcore/11.3.1/fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
     "/home/ilias/.nuget/packages/fluentvalidation.dependencyinjectionextensions/12.1.1/fluentvalidation.dependencyinjectionextensions.12.1.1.nupkg.sha512",
     "/home/ilias/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/ilias/.nuget/packages/microsoft.aspnetcore.openapi/10.0.5/microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",

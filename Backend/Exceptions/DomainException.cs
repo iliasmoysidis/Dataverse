@@ -1,4 +1,4 @@
-namespace Backend.Modules.Users.Domain.Exceptions;
+namespace Backend.Exceptions;
 
 public abstract class DomainException : Exception
 {

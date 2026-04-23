@@ -1,3 +1,5 @@
+using Backend.Exceptions;
+
 namespace Backend.Modules.Users.Application.Exceptions;
 
 public sealed class UserAlreadyExistsException : AppException

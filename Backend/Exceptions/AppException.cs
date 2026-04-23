@@ -1,4 +1,4 @@
-namespace Backend.Modules.Users.Application.Exceptions;
+namespace Backend.Exceptions;
 
 public abstract class AppException : Exception
 {

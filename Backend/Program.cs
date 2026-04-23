@@ -1,9 +1,11 @@
+using Backend.Middlewares;
 using Backend.Modules.Users.Api.Register;
 using Backend.Modules.Users.Application;
 using Backend.Modules.Users.Application.UseCases.Register;
 using Backend.Modules.Users.Infrastructure;
 using Backend.Modules.Users.Ports;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
+
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -38,5 +44,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 app.Run();
