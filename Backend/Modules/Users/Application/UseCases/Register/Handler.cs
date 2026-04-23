@@ -1,3 +1,4 @@
+using Backend.Modules.Users.Application.Exceptions;
 using Backend.Modules.Users.Domain;
 using Backend.Modules.Users.Ports;
 
@@ -25,7 +26,7 @@ public sealed class RegisterUserHandler
         var exists = await _repo.ExistsByEmailAsync(command.Email, ct);
 
         if (exists)
-            throw new Exception("User already exists.");
+            throw new UserAlreadyExistsException();
 
         var hash = _hasher.Hash(command.Password);
 
