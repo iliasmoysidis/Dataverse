@@ -1,16 +1,17 @@
+using Backend.Modules.Users.Domain.Exceptions;
 using Backend.Modules.Users.Domain.ValueObjects;
 
 namespace Backend.Modules.Users.Domain;
 
 public class User
 {
-    public int Id { get; set; }
-    public Email Email { get; set; }
-    public PasswordHash PasswordHash { get; set; }
+    public int Id { get; private set; }
+    public Email Email { get; private set; } = null!;
+    public PasswordHash PasswordHash { get; private set; } = null!;
 
-    public Name Name { get; set; }
-    public Surname Surname { get; set; }
-    public Role Role { get; set; }
+    public Name Name { get; private set; } = null!;
+    public Surname Surname { get; private set; } = null!;
+    public Role Role { get; private set; }
 
     private User(Email email, PasswordHash passwordHash, Name name, Surname surname, Role role)
     {
@@ -21,6 +22,8 @@ public class User
         Role = role;
     }
 
+    private User() { }
+
     public static User Create(
         string email,
         string passwordHash,
@@ -29,6 +32,9 @@ public class User
         Role role
     )
     {
+        if (!Enum.IsDefined<Role>(role))
+            throw new InvalidRoleException();
+
         return new User(
             Email.Create(email),
             PasswordHash.Create(passwordHash),

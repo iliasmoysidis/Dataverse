@@ -14,12 +14,12 @@ public sealed record Surname
     public static Surname Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new InvalidSurnameError();
+            throw new InvalidSurnameException();
 
         value = value.Trim();
 
         if (value.Length < 2)
-            throw new InvalidSurnameError();
+            throw new InvalidSurnameException();
 
         return new Surname(value);
     }

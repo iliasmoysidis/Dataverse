@@ -1,7 +1,7 @@
 namespace Backend.Modules.Users.Domain.Exceptions;
 
-public sealed class InvalidNameError : DomainError
+public sealed class InvalidNameException : DomainException
 {
-    public InvalidNameError()
+    public InvalidNameException()
         : base("users.invalid_name", "Name is invalid.") { }
 }

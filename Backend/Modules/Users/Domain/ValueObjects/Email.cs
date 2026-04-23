@@ -17,13 +17,14 @@ public sealed record Email
         if (string.IsNullOrWhiteSpace(value))
             throw new InvalidEmailException();
 
-        value = value.Trim().ToLower();
+        value = value.Trim().ToLowerInvariant();
 
         try
         {
             var mail = new MailAddress(value);
             return new Email(mail.Address);
-        } catch
+        }
+        catch
         {
             throw new InvalidEmailException();
         }

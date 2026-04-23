@@ -14,12 +14,12 @@ public sealed record Name
     public static Name Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new InvalidNameError();
+            throw new InvalidNameException();
 
         value = value.Trim();
 
         if (value.Length < 2)
-            throw new InvalidNameError();
+            throw new InvalidNameException();
 
         return new Name(value);
     }

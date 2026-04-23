@@ -1,10 +1,10 @@
 namespace Backend.Modules.Users.Domain.Exceptions;
 
-public abstract class DomainError : Exception
+public abstract class DomainException : Exception
 {
     public string Code { get; }
 
-    protected DomainError(string code, string message) : base(message)
+    protected DomainException(string code, string message) : base(message)
     {
         Code = code;
     }

@@ -1,3 +1,5 @@
+using Backend.Modules.Users.Domain.Exceptions;
+
 namespace Backend.Modules.Users.Domain.ValueObjects;
 
 public sealed record PasswordHash
@@ -12,7 +14,7 @@ public sealed record PasswordHash
     public static PasswordHash Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException("Password hash required.");
+            throw new InvalidPasswordHashException();
 
         return new PasswordHash(value);
     }
