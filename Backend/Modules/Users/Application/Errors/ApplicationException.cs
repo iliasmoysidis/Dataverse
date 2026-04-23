@@ -1,8 +1,8 @@
-public abstract class ApplicationException : Exception
+public abstract class ApplicationLayerException : Exception
 {
     public string Code { get; }
 
-    protected ApplicationException(string code, string message) : base(message)
+    protected ApplicationLayerException(string code, string message) : base(message)
     {
         Code = code;
     }

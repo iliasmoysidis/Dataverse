@@ -1,8 +1,8 @@
 namespace Backend.Modules.Users.Application.Exceptions;
 
-public sealed class UserAlreadyExistsException : ApplicationException
+public sealed class UserAlreadyExistsException : ApplicationLayerException
 {
     public UserAlreadyExistsException()
-        : base("user.already_exists", "User with this email already exists.")
+        : base("users.already_exists", "User with this email already exists.")
     { }
 }

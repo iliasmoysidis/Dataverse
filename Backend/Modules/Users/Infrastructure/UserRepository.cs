@@ -1,4 +1,5 @@
 using Backend.Modules.Users.Domain;
+using Backend.Modules.Users.Domain.ValueObjects;
 using Backend.Modules.Users.Ports;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ public sealed class UserRepository : IUserRepository
 
     public Task<bool> ExistsByEmailAsync(string email, CancellationToken ct)
     {
-        return _db.Users.AnyAsync(x => x.Email.Value == email, ct);
+        var normalized = Email.Create(email);
+        return _db.Users.AnyAsync(x => x.Email.Value == normalized.Value, ct);
     }
 }
