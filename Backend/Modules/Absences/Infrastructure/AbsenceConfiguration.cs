@@ -1,4 +1,5 @@
 using Backend.Modules.Absences.Domain;
+using Backend.Modules.Users.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,5 +22,10 @@ public sealed class AbsenceConfiguration : IEntityTypeConfiguration<Absence>
         builder.Property(x => x.Status)
             .HasConversion<int>()
             .IsRequired();
+
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
