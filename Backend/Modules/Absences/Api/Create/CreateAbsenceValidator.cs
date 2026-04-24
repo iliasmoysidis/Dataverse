@@ -1,16 +1,14 @@
 using Backend.Modules.Absences.Api.Requests;
+using Backend.Modules.Absences.Api.Requests.Create;
 using FluentValidation;
 
-namespace Backend.Modules.Absences.Api;
+namespace Backend.Modules.Absences.Api.Create;
 
 public sealed class CreateAbsenceValidator
     : AbstractValidator<CreateAbsenceRequest>
 {
     public CreateAbsenceValidator()
     {
-        RuleFor(x => x.UserId)
-            .GreaterThan(0);
-
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
         RuleFor(x => x.StartDate)

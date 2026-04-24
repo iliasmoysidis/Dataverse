@@ -1,7 +1,6 @@
-namespace Backend.Modules.Absences.Api.Requests;
+namespace Backend.Modules.Absences.Api.Requests.Create;
 
 public sealed record CreateAbsenceRequest(
-    int UserId,
     DateOnly StartDate,
     DateOnly EndDate
 );
