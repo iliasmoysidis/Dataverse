@@ -2,8 +2,6 @@ using Backend.Middlewares;
 using Backend.Modules.Absences.Application.Ports;
 using Backend.Modules.Absences.Application.UseCases.Approve;
 using Backend.Modules.Absences.Application.UseCases.Create;
-using Backend.Modules.Absences.Application.UseCases.GetByUser;
-using Backend.Modules.Absences.Application.UseCases.GetPending;
 using Backend.Modules.Absences.Application.UseCases.Reject;
 using Backend.Modules.Absences.Infrastructure;
 using Backend.Modules.Users.Api.Register;
@@ -105,10 +103,6 @@ builder.Services.AddScoped<LoginUserHandler>();
 builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
-builder.Services.AddScoped<GetAbsencesHandler>();
-builder.Services.AddScoped<GetAbsencesByUserHandler>();
-
-
 
 
 var app = builder.Build();

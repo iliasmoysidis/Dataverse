@@ -1,10 +1,8 @@
-using Backend.Modules.Absences.Application.UseCases.GetByUser;
-using Backend.Modules.Absences.Application.UseCases.GetPending;
+using Backend.Modules.Absences.Application.UseCases.Search;
 
 namespace Backend.Modules.Absences.Application.Ports;
 
 public interface IAbsenceQueries
 {
-    Task<IReadOnlyCollection<GetAbsenceResult>> GetAbsencesAsync(CancellationToken ct);
-    Task<IReadOnlyCollection<GetAbsencesByUserResult>> GetByUserAsync(int userId, CancellationToken ct);
+    Task<PagedResult<GetAbsenceResult>> SearchAsync(SearchAbsencesQuery query, CancellationToken ct);
 }

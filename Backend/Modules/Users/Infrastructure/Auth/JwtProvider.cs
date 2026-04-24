@@ -28,7 +28,8 @@ public sealed class JwtProvider : IJwtProvider
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email.Value),
             new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim(ClaimTypes.Name, user.Name.Value)
+            new Claim(ClaimTypes.Name, user.Name.Value),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));

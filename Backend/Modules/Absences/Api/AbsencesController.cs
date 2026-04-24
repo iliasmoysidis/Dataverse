@@ -2,9 +2,8 @@ using System.Security.Claims;
 using Backend.Modules.Absences.Api.Requests.Create;
 using Backend.Modules.Absences.Application.UseCases.Approve;
 using Backend.Modules.Absences.Application.UseCases.Create;
-using Backend.Modules.Absences.Application.UseCases.GetByUser;
-using Backend.Modules.Absences.Application.UseCases.GetPending;
 using Backend.Modules.Absences.Application.UseCases.Reject;
+using Backend.Modules.Absences.Application.UseCases.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,22 +17,19 @@ public sealed class AbsencesController : ControllerBase
     private readonly CreateAbsenceHandler _create;
     private readonly ApproveAbsenceHandler _approve;
     private readonly RejectAbsenceHandler _reject;
-    private readonly GetAbsencesHandler _getAbsences;
-    private readonly GetAbsencesByUserHandler _getByUser;
+    private readonly SearchAbsencesHandler _search;
 
     public AbsencesController(
         CreateAbsenceHandler create,
         ApproveAbsenceHandler approve,
         RejectAbsenceHandler reject,
-        GetAbsencesHandler getAbsences,
-        GetAbsencesByUserHandler getByUser
+        SearchAbsencesHandler search
     )
     {
         _create = create;
         _approve = approve;
         _reject = reject;
-        _getAbsences = getAbsences;
-        _getByUser = getByUser;
+        _search = search;
     }
 
     [HttpPost]
@@ -81,38 +77,28 @@ public sealed class AbsencesController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Manager")]
     [HttpGet]
-    public async Task<IActionResult> GetAbsences(
-        CancellationToken ct)
+    [Authorize]
+    public async Task<IActionResult> Search(
+    [FromQuery] SearchAbsencesQuery query,
+    CancellationToken ct)
     {
-        var result = await _getAbsences.Handle(
-            new GetAbsencesQuery(), ct);
+        var currentUserId = int.Parse(
+            User.FindFirstValue(ClaimTypes.NameIdentifier)!
+        );
+
+        var isManager = User.IsInRole("Manager");
+
+        if (!isManager)
+        {
+            query = query with
+            {
+                UserId = currentUserId
+            };
+        }
+
+        var result = await _search.Handle(query, ct);
 
         return Ok(result);
-    }
-
-    [HttpGet("users/{userId:int}")]
-    public async Task<IActionResult> GetByUser(
-        int userId,
-        CancellationToken ct)
-    {
-        if (!CanAccessUser(userId))
-            return Forbid();
-
-        var result = await _getByUser.Handle(
-            new GetAbsencesByUserQuery(userId), ct);
-
-        return Ok(result);
-    }
-
-    private bool CanAccessUser(int userId)
-    {
-        var currentUserId =
-            int.Parse(User.FindFirstValue(
-                ClaimTypes.NameIdentifier)!);
-
-        return User.IsInRole("Manager")
-            || currentUserId == userId;
     }
 }
