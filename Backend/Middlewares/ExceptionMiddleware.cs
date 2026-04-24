@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Backend.Exceptions;
+using Backend.Modules.Users.Application.Exceptions;
 
 namespace Backend.Middlewares;
 
@@ -26,6 +27,10 @@ public sealed class ExceptionMiddleware
         catch (DomainException ex)
         {
             await WriteProblem(context, 400, ex.Code, ex.Message);
+        }
+        catch (InvalidCredentialsException ex)
+        {
+            await WriteProblem(context, 401, ex.Code, ex.Message);
         }
         catch (AppException ex)
         {

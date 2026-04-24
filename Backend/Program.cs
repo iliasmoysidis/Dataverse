@@ -11,16 +11,45 @@ using Backend.Modules.Users.Api.Register;
 using Backend.Modules.Users.Application;
 using Backend.Modules.Users.Application.UseCases.Register;
 using Backend.Modules.Users.Infrastructure;
-using Backend.Modules.Users.Ports;
+using Backend.Modules.Users.Application.Ports;
 using Backend.Shared;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Backend.Modules.Users.Application.Auth;
+using Backend.Modules.Users.Infrastructure.Auth;
+using Backend.Modules.Users.Application.UseCases.Login;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
+var jwtKey = builder.Configuration["Jwt:Key"]!;
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+         new TokenValidationParameters
+         {
+             ValidateIssuer = true,
+             ValidateAudience = true,
+             ValidateLifetime = true,
+             ValidateIssuerSigningKey = true,
+
+             ValidIssuer = builder.Configuration["Jwt:Issuer"],
+             ValidAudience = builder.Configuration["Jwt:Audience"],
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+         };
+    });
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 
@@ -73,12 +102,14 @@ builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<RegisterUserHandler>();
+builder.Services.AddScoped<LoginUserHandler>();
 builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
 builder.Services.AddScoped<GetPendingAbsencesHandler>();
 builder.Services.AddScoped<GetPendingAbsencesByUserHandler>();
 builder.Services.AddScoped<GetAbsencesByUserHandler>();
+
 
 
 
@@ -92,5 +123,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

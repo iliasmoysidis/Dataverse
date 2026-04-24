@@ -1,6 +1,6 @@
 using Backend.Modules.Users.Domain;
 using Backend.Modules.Users.Domain.ValueObjects;
-using Backend.Modules.Users.Ports;
+using Backend.Modules.Users.Application.Ports;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Modules.Users.Infrastructure;
@@ -23,5 +23,11 @@ public sealed class UserRepository : IUserRepository
     {
         var normalized = Email.Create(email);
         return _db.Users.AnyAsync(x => x.Email.Value == normalized.Value, ct);
+    }
+
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
+    {
+        var normalized = Email.Create(email);
+        return await _db.Users.FirstOrDefaultAsync(x => x.Email.Value == normalized.Value, ct);
     }
 }
