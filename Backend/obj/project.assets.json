@@ -2409,19 +2409,19 @@
     ]
   },
   "packageFolders": {
-    "/home/ilias/.nuget/packages/": {}
+    "/home/iliamous/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ilias/VSCodeProjects/Dataverse/Backend/Backend.csproj",
+      "projectUniqueName": "/home/iliamous/Work/Dataverse/Backend/Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "/home/ilias/VSCodeProjects/Dataverse/Backend/Backend.csproj",
-      "packagesPath": "/home/ilias/.nuget/packages/",
-      "outputPath": "/home/ilias/VSCodeProjects/Dataverse/Backend/obj/",
+      "projectPath": "/home/iliamous/Work/Dataverse/Backend/Backend.csproj",
+      "packagesPath": "/home/iliamous/.nuget/packages/",
+      "outputPath": "/home/iliamous/Work/Dataverse/Backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/ilias/.nuget/NuGet/NuGet.Config"
+        "/home/iliamous/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2510,7 +2510,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.105/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.103/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
