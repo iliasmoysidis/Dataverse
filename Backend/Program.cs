@@ -1,4 +1,7 @@
 using Backend.Middlewares;
+using Backend.Modules.Absences.Application.Ports;
+using Backend.Modules.Absences.Application.UseCases.Create;
+using Backend.Modules.Absences.Infrastructure;
 using Backend.Modules.Users.Api.Register;
 using Backend.Modules.Users.Application;
 using Backend.Modules.Users.Application.UseCases.Register;
@@ -28,13 +31,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
 
-builder.Services.AddScoped<RegisterUserHandler>();
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAbsenceRepository, AbsenceRepository>();
 
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<RegisterUserHandler>();
+builder.Services.AddScoped<CreateAbsenceHandler>();
 
 
 
