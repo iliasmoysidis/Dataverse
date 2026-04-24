@@ -31,6 +31,16 @@ public sealed class ExceptionMiddleware
         {
             await WriteProblem(context, 409, ex.Code, ex.Message);
         }
+        catch (InfrastructureException ex)
+        {
+            _logger.LogError(ex, "Infrastructure error");
+
+            await WriteProblem(
+                context,
+                503,
+                ex.Code,
+                ex.Message);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unhandled exception");

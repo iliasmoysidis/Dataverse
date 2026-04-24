@@ -4,6 +4,7 @@ using Backend.Modules.Users.Application;
 using Backend.Modules.Users.Application.UseCases.Register;
 using Backend.Modules.Users.Infrastructure;
 using Backend.Modules.Users.Ports;
+using Backend.Shared;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,8 @@ builder.Services.AddScoped<RegisterUserHandler>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 

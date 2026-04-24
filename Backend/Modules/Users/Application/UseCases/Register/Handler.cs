@@ -1,6 +1,7 @@
 using Backend.Modules.Users.Application.Exceptions;
 using Backend.Modules.Users.Domain;
 using Backend.Modules.Users.Ports;
+using Backend.Shared;
 
 namespace Backend.Modules.Users.Application.UseCases.Register;
 
@@ -8,41 +9,48 @@ public sealed class RegisterUserHandler
 {
     private readonly IUserRepository _repo;
     private readonly IPasswordHasher _hasher;
+    private readonly IUnitOfWork _uow;
 
     public RegisterUserHandler(
         IUserRepository repo,
-        IPasswordHasher hasher
+        IPasswordHasher hasher,
+        IUnitOfWork uow
     )
     {
         _repo = repo;
         _hasher = hasher;
+        _uow = uow;
     }
 
-    public async Task<RegisterUserResult> Handle(
+    public Task<RegisterUserResult> Handle(
         RegisterUserCommand command,
         CancellationToken ct
     )
     {
-        var exists = await _repo.ExistsByEmailAsync(command.Email, ct);
+        return _uow.ExecuteAsync(async () =>
+        {
+            var exists = await _repo.ExistsByEmailAsync(command.Email, ct);
 
-        if (exists)
-            throw new UserAlreadyExistsException();
+            if (exists)
+                throw new UserAlreadyExistsException();
 
-        var hash = _hasher.Hash(command.Password);
+            var hash = _hasher.Hash(command.Password);
 
-        var user = User.Create(
-            command.Email,
-            hash,
-            command.Name,
-            command.Surname,
-            command.Role
-        );
+            var user = User.Create(
+                command.Email,
+                hash,
+                command.Name,
+                command.Surname,
+                command.Role
+            );
 
-        await _repo.AddAsync(user, ct);
+            await _repo.AddAsync(user, ct);
 
-        return new RegisterUserResult(
-            user.Id,
-            user.Email.Value
-        );
+            return new RegisterUserResult(
+                user.Id,
+                user.Email.Value
+            );
+
+        }, ct);
     }
 }
