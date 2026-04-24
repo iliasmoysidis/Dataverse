@@ -20,6 +20,7 @@ using Backend.Modules.Users.Application.UseCases.Login;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Backend.Modules.Absences.Application.UseCases.Search;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +104,7 @@ builder.Services.AddScoped<LoginUserHandler>();
 builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
+builder.Services.AddScoped<SearchAbsencesHandler>();
 
 
 var app = builder.Build();

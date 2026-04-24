@@ -32,9 +32,9 @@ public sealed class UsersController : ControllerBase
             (Role)request.Role
         );
 
-        var result = await _register.Handle(command, ct);
+        await _register.Handle(command, ct);
 
-        return Created($"/api/users/{result.Id}", result);
+        return Created("/api/users/me", new { message = "User created" });
     }
 
     [HttpPost("login")]

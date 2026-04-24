@@ -1,6 +1,6 @@
 using Backend.Modules.Users.Application.Exceptions;
+using Backend.Modules.Users.Application.Ports;
 using Backend.Modules.Users.Domain;
-using Backend.Modules.Users.Ports;
 using Backend.Shared;
 
 namespace Backend.Modules.Users.Application.UseCases.Register;
@@ -22,7 +22,7 @@ public sealed class RegisterUserHandler
         _uow = uow;
     }
 
-    public Task<RegisterUserResult> Handle(
+    public Task Handle(
         RegisterUserCommand command,
         CancellationToken ct
     )
@@ -45,11 +45,6 @@ public sealed class RegisterUserHandler
             );
 
             await _repo.AddAsync(user, ct);
-
-            return new RegisterUserResult(
-                user.Id,
-                user.Email.Value
-            );
 
         }, ct);
     }
