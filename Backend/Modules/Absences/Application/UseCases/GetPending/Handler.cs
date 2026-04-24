@@ -2,7 +2,7 @@ using Backend.Modules.Absences.Application.Ports;
 
 namespace Backend.Modules.Absences.Application.UseCases.GetPending;
 
-public sealed record GetPendingAbsencesHandler
+public sealed class GetPendingAbsencesHandler
 {
     private readonly IAbsenceQueries _queries;
 

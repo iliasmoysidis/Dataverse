@@ -2,6 +2,7 @@ using Backend.Middlewares;
 using Backend.Modules.Absences.Application.Ports;
 using Backend.Modules.Absences.Application.UseCases.Approve;
 using Backend.Modules.Absences.Application.UseCases.Create;
+using Backend.Modules.Absences.Application.UseCases.GetByUser;
 using Backend.Modules.Absences.Application.UseCases.GetPending;
 using Backend.Modules.Absences.Application.UseCases.GetPendingByUser;
 using Backend.Modules.Absences.Application.UseCases.Reject;
@@ -14,6 +15,7 @@ using Backend.Modules.Users.Ports;
 using Backend.Shared;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +25,36 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 
 builder.Services
-    .AddFluentValidationAutoValidation()
+    .AddFluentValidationAutoValidation(options =>
+    {
+        options.DisableDataAnnotationsValidation = true;
+    })
     .AddFluentValidationClientsideAdapters();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = false;
+
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value!.Errors.Count > 0)
+            .ToDictionary(
+                x => x.Key,
+                x => x.Value!.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToArray()
+            );
+
+        return new BadRequestObjectResult(new
+        {
+            code = "validation.failed",
+            message = "One or more validation errors occurred.",
+            status = 400,
+            errors
+        });
+    };
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -46,9 +76,9 @@ builder.Services.AddScoped<RegisterUserHandler>();
 builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
-builder.Services.AddScoped<GetPendingAbsencesQuery>();
-builder.Services.AddScoped<GetPendingAbsencesByUserQuery>();
-builder.Services.AddScoped<GetPendingAbsencesByUserQuery>();
+builder.Services.AddScoped<GetPendingAbsencesHandler>();
+builder.Services.AddScoped<GetPendingAbsencesByUserHandler>();
+builder.Services.AddScoped<GetAbsencesByUserHandler>();
 
 
 
