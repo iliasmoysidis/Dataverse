@@ -4,7 +4,6 @@ using Backend.Modules.Absences.Application.UseCases.Approve;
 using Backend.Modules.Absences.Application.UseCases.Create;
 using Backend.Modules.Absences.Application.UseCases.GetByUser;
 using Backend.Modules.Absences.Application.UseCases.GetPending;
-using Backend.Modules.Absences.Application.UseCases.GetPendingByUser;
 using Backend.Modules.Absences.Application.UseCases.Reject;
 using Backend.Modules.Absences.Infrastructure;
 using Backend.Modules.Users.Api.Register;
@@ -107,7 +106,6 @@ builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
 builder.Services.AddScoped<GetAbsencesHandler>();
-builder.Services.AddScoped<GetPendingAbsencesByUserHandler>();
 builder.Services.AddScoped<GetAbsencesByUserHandler>();
 
 
