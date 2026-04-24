@@ -106,7 +106,7 @@ builder.Services.AddScoped<LoginUserHandler>();
 builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
-builder.Services.AddScoped<GetPendingAbsencesHandler>();
+builder.Services.AddScoped<GetAbsencesHandler>();
 builder.Services.AddScoped<GetPendingAbsencesByUserHandler>();
 builder.Services.AddScoped<GetAbsencesByUserHandler>();
 

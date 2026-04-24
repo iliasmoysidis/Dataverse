@@ -1,6 +1,6 @@
 namespace Backend.Modules.Absences.Application.UseCases.GetPending;
 
-public sealed record GetPendingAbsencesResult(
+public sealed record GetAbsenceResult(
     int Id,
     int UserId,
     DateOnly StartDate,

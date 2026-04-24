@@ -4,7 +4,6 @@ using Backend.Modules.Absences.Application.UseCases.Approve;
 using Backend.Modules.Absences.Application.UseCases.Create;
 using Backend.Modules.Absences.Application.UseCases.GetByUser;
 using Backend.Modules.Absences.Application.UseCases.GetPending;
-using Backend.Modules.Absences.Application.UseCases.GetPendingByUser;
 using Backend.Modules.Absences.Application.UseCases.Reject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,24 +18,21 @@ public sealed class AbsencesController : ControllerBase
     private readonly CreateAbsenceHandler _create;
     private readonly ApproveAbsenceHandler _approve;
     private readonly RejectAbsenceHandler _reject;
-    private readonly GetPendingAbsencesHandler _getPending;
-    private readonly GetPendingAbsencesByUserHandler _getPendingByUser;
+    private readonly GetAbsencesHandler _getAbsences;
     private readonly GetAbsencesByUserHandler _getByUser;
 
     public AbsencesController(
         CreateAbsenceHandler create,
         ApproveAbsenceHandler approve,
         RejectAbsenceHandler reject,
-        GetPendingAbsencesHandler getPending,
-        GetPendingAbsencesByUserHandler getPendingByUser,
+        GetAbsencesHandler getAbsences,
         GetAbsencesByUserHandler getByUser
     )
     {
         _create = create;
         _approve = approve;
         _reject = reject;
-        _getPending = getPending;
-        _getPendingByUser = getPendingByUser;
+        _getAbsences = getAbsences;
         _getByUser = getByUser;
     }
 
@@ -86,26 +82,12 @@ public sealed class AbsencesController : ControllerBase
     }
 
     [Authorize(Roles = "Manager")]
-    [HttpGet("pending")]
-    public async Task<IActionResult> GetPending(
+    [HttpGet]
+    public async Task<IActionResult> GetAbsences(
         CancellationToken ct)
     {
-        var result = await _getPending.Handle(
-            new GetPendingAbsencesQuery(), ct);
-
-        return Ok(result);
-    }
-
-    [HttpGet("users/{userId:int}/pending")]
-    public async Task<IActionResult> GetPendingByUser(
-        int userId,
-        CancellationToken ct)
-    {
-        if (!CanAccessUser(userId))
-            return Forbid();
-
-        var result = await _getPendingByUser.Handle(
-            new GetPendingAbsencesByUserQuery(userId), ct);
+        var result = await _getAbsences.Handle(
+            new GetAbsencesQuery(), ct);
 
         return Ok(result);
     }
