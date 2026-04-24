@@ -56,11 +56,17 @@ public class Absence
 
     public void Approve()
     {
+        if (Status != Status.Pending)
+            throw new InvalidAbsenceStatusTransitionException();
+
         Status = Status.Approved;
     }
 
     public void Reject()
     {
+        if (Status != Status.Pending)
+            throw new InvalidAbsenceStatusTransitionException();
+
         Status = Status.Rejected;
     }
 }
