@@ -13,14 +13,17 @@ public sealed class AbsenceConfiguration : IEntityTypeConfiguration<Absence>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.UserId).IsRequired();
+        builder.Property(x => x.Id).HasColumnName("id");
 
-        builder.Property(x => x.StartDate).IsRequired();
+        builder.Property(x => x.UserId).HasColumnName("user_id").IsRequired();
 
-        builder.Property(x => x.EndDate).IsRequired();
+        builder.Property(x => x.StartDate).HasColumnName("start_date").IsRequired();
+
+        builder.Property(x => x.EndDate).HasColumnName("end_date").IsRequired();
 
         builder.Property(x => x.Status)
             .HasConversion<int>()
+            .HasColumnName("status")
             .IsRequired();
 
         builder.HasOne<User>()

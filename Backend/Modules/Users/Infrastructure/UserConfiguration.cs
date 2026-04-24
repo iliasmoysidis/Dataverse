@@ -13,6 +13,8 @@ public sealed class UserConfiguration
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id).HasColumnName("id");
+
         builder.OwnsOne(x => x.Email, email =>
         {
             email.Property(x => x.Value)
@@ -46,6 +48,7 @@ public sealed class UserConfiguration
         });
 
         builder.Property(x => x.Role)
+            .HasColumnName("role")
             .IsRequired();
     }
 }
