@@ -47,7 +47,8 @@ builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
 builder.Services.AddScoped<GetPendingAbsencesQuery>();
-builder.Services.AddScoped<GetPendingAbsencesByUserResult>();
+builder.Services.AddScoped<GetPendingAbsencesByUserQuery>();
+builder.Services.AddScoped<GetPendingAbsencesByUserQuery>();
 
 
 
