@@ -57,16 +57,14 @@ export class Login {
             next: (res) => {
                 localStorage.setItem('token', res.token);
 
+                this.router.navigate(['/absences']);
+
                 this.snackBar.open('Login successful', '', {
                     duration: 1500,
                     horizontalPosition: 'end',
                     verticalPosition: 'top',
                     panelClass: ['success-snackbar'],
                 });
-
-                setTimeout(() => {
-                    this.router.navigate(['/']);
-                }, 1500);
             },
             error: (err) => {
                 const message = err.error?.message ?? 'Invalid credentials';

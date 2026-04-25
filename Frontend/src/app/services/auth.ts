@@ -14,6 +14,10 @@ export class Auth {
         return this.http.post(`${this.api}/login`, data);
     }
 
+    logout() {
+        localStorage.removeItem('token');
+    }
+
     register(data: {
         name: string;
         surname: string;
