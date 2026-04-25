@@ -1,0 +1,48 @@
+.public-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 460px;
+    background: #f8fafc;
+}
+
+.brand-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+}
+
+.brand-area h1 {
+    font-size: 56px;
+    font-weight: 700;
+    margin: 0 0 16px;
+}
+
+.brand-area p {
+    font-size: 20px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.content-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+}
+
+@media (max-width: 900px) {
+    .public-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-area {
+        display: none;
+    }
+
+    .content-area {
+        padding: 20px;
+    }
+}

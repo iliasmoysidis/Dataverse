@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
-import { Absence, AbsenceRow } from '../../services/absence';
+import { Absence, AbsenceRow } from '../../core/services/absence';
 
 export enum AbsenceStatus {
     Pending = 1,

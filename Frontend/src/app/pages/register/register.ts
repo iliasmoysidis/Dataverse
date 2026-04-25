@@ -13,8 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../services/auth';
-import { roleValidator } from '../../validators/role';
+import { Auth } from '../../core/services/auth';
+import { roleValidator } from '../../shared/validators/role';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
