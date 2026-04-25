@@ -1,4 +1,3 @@
-using Backend.Modules.Absences.Api.Requests;
 using Backend.Modules.Absences.Api.Requests.Create;
 using FluentValidation;
 
