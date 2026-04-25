@@ -27,6 +27,16 @@ using Backend.Infrastructure.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
@@ -145,6 +155,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+app.UseCors("Frontend");
 
 
 if (app.Environment.IsDevelopment())

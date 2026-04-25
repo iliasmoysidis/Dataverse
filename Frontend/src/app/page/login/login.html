@@ -1,0 +1,23 @@
+<div class="login-wrapper">
+    <mat-card class="login-card">
+        <h1>Sign In</h1>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="email">
+            <mat-icon matSuffix>mail</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" [(ngModel)]="password"/>
+            <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        <div class="actions">
+            <button mat-raised-button color="primary" (click)="login()">Login</button>
+
+            <button mat-button color="primary">Register</button>
+        </div>
+    </mat-card>
+</div>
