@@ -89,7 +89,14 @@
             <div class="empty-state">No absences found.</div>
         }
 
-        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+        <mat-paginator
+            [length]="totalCount"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[5, 10, 20]"
+            (page)="onPageChange($event)"
+            showFirstLastButtons
+        >
         </mat-paginator>
     </div>
 </div>

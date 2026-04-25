@@ -46,7 +46,7 @@ export class Absence {
 
     private api = 'http://localhost:5021/api/absences';
 
-    getAll(): Observable<PagedResult<AbsenceDto>> {
-        return this.http.get<PagedResult<AbsenceDto>>(this.api);
+    getAll(page = 1, limit = 5): Observable<PagedResult<AbsenceDto>> {
+        return this.http.get<PagedResult<AbsenceDto>>(`${this.api}?page=${page}&limit=${limit}`);
     }
 }
