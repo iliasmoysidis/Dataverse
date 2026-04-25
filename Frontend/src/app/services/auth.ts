@@ -15,10 +15,10 @@ export class Auth {
     }
 
     register(data: {
-        email: string;
-        password: string;
         name: string;
         surname: string;
+        email: string;
+        password: string;
         role: number;
     }): Observable<any> {
         return this.http.post(`${this.api}/register`, data);
