@@ -13,12 +13,12 @@
 }
 
 .page-header h1 {
-  margin: 0;
+    margin: 0;
 }
 
 .subtitle {
-  margin-top: 10px;
-  color: #6b7280;
+    margin-top: 10px;
+    color: #6b7280;
 }
 
 .search-field {
@@ -58,4 +58,22 @@ table {
 .rejected-chip {
     background: #fee2e2;
     color: #991b1b;
+}
+
+.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.header-cell-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sort-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
 }

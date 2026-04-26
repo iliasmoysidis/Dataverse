@@ -1,24 +1,71 @@
 <div class="page">
-    <!-- Page Header -->
+    <!-- Header -->
     <div class="page-header">
         <div class="title-block">
             <h1>Absences</h1>
             <p class="subtitle">Manage employee absence requests</p>
         </div>
+    </div>
 
+    <!-- Filters -->
+    <div class="filters-row">
+        <!-- Search -->
         <mat-form-field appearance="outline" class="search-field">
             <mat-label>Search</mat-label>
 
             <input matInput placeholder="Name, surname, email..." (keyup)="applyFilter($event)" />
+
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Status -->
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Status</mat-label>
+
+            <mat-select [value]="status" (selectionChange)="statusChanged($event.value)">
+                <mat-option [value]="null">All</mat-option>
+                <mat-option [value]="AbsenceStatus.Pending">Pending</mat-option>
+                <mat-option [value]="AbsenceStatus.Approved">Approved</mat-option>
+                <mat-option [value]="AbsenceStatus.Rejected">Rejected</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- From -->
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>From</mat-label>
+
+            <input matInput [matDatepicker]="fromPicker" (dateChange)="fromChanged($event)" />
+
+            <mat-datepicker-toggle matIconSuffix [for]="fromPicker"> </mat-datepicker-toggle>
+
+            <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- To -->
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>To</mat-label>
+
+            <input matInput [matDatepicker]="toPicker" (dateChange)="toChanged($event)" />
+
+            <mat-datepicker-toggle matIconSuffix [for]="toPicker"> </mat-datepicker-toggle>
+
+            <mat-datepicker #toPicker></mat-datepicker>
         </mat-form-field>
     </div>
 
-    <!-- Table Card -->
+    <!-- Table -->
     <div class="table-card">
-        <table mat-table [dataSource]="dataSource" matSort>
+        <table mat-table [dataSource]="dataSource">
             <!-- Name -->
             <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <th mat-header-cell *matHeaderCellDef (click)="sort('name')" class="sortable">
+                    <div class="header-cell-content">
+                        <span>Name</span>
+                        <mat-icon class="sort-icon">
+                            {{ sortIcon('name') }}
+                        </mat-icon>
+                    </div>
+                </th>
 
                 <td mat-cell *matCellDef="let row">
                     {{ row.name }}
@@ -27,7 +74,14 @@
 
             <!-- Surname -->
             <ng-container matColumnDef="surname">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Surname</th>
+                <th mat-header-cell *matHeaderCellDef (click)="sort('surname')" class="sortable">
+                    <div class="header-cell-content">
+                        <span>Surname</span>
+                        <mat-icon class="sort-icon">
+                            {{ sortIcon('surname') }}
+                        </mat-icon>
+                    </div>
+                </th>
 
                 <td mat-cell *matCellDef="let row">
                     {{ row.surname }}
@@ -36,7 +90,14 @@
 
             <!-- Email -->
             <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                <th mat-header-cell *matHeaderCellDef (click)="sort('email')" class="sortable">
+                    <div class="header-cell-content">
+                        <span>Email</span>
+                        <mat-icon class="sort-icon">
+                            {{ sortIcon('email') }}
+                        </mat-icon>
+                    </div>
+                </th>
 
                 <td mat-cell *matCellDef="let row">
                     {{ row.email }}
@@ -45,7 +106,14 @@
 
             <!-- Start -->
             <ng-container matColumnDef="startDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Start</th>
+                <th mat-header-cell *matHeaderCellDef (click)="sort('startDate')" class="sortable">
+                    <div class="header-cell-content">
+                        <span>Start</span>
+                        <mat-icon class="sort-icon">
+                            {{ sortIcon('startDate') }}
+                        </mat-icon>
+                    </div>
+                </th>
 
                 <td mat-cell *matCellDef="let row">
                     {{ row.startDate | date: 'dd/MM/yyyy' }}
@@ -54,7 +122,14 @@
 
             <!-- End -->
             <ng-container matColumnDef="endDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>End</th>
+                <th mat-header-cell *matHeaderCellDef (click)="sort('endDate')" class="sortable">
+                    <div class="header-cell-content">
+                        <span>End</span>
+                        <mat-icon class="sort-icon">
+                            {{ sortIcon('endDate') }}
+                        </mat-icon>
+                    </div>
+                </th>
 
                 <td mat-cell *matCellDef="let row">
                     {{ row.endDate | date: 'dd/MM/yyyy' }}
@@ -63,15 +138,22 @@
 
             <!-- Status -->
             <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <th mat-header-cell *matHeaderCellDef (click)="sort('status')" class="sortable">
+                    <div class="header-cell-content">
+                        <span>Status</span>
+                        <mat-icon class="sort-icon">
+                            {{ sortIcon('status') }}
+                        </mat-icon>
+                    </div>
+                </th>
 
                 <td mat-cell *matCellDef="let row">
-                    @if (row.status === AbsenceStatus.Approved) {
-                        <mat-chip class="approved-chip">Approved</mat-chip>
-                    }
-
                     @if (row.status === AbsenceStatus.Pending) {
                         <mat-chip class="pending-chip">Pending</mat-chip>
+                    }
+
+                    @if (row.status === AbsenceStatus.Approved) {
+                        <mat-chip class="approved-chip">Approved</mat-chip>
                     }
 
                     @if (row.status === AbsenceStatus.Rejected) {
@@ -80,15 +162,18 @@
                 </td>
             </ng-container>
 
+            <!-- Header / Rows -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
+        <!-- Empty -->
         @if (dataSource.data.length === 0) {
             <div class="empty-state">No absences found.</div>
         }
 
+        <!-- Pagination -->
         <mat-paginator
             [length]="totalCount"
             [pageIndex]="pageIndex"

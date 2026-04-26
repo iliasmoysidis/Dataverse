@@ -13,6 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 
 import { Absence, AbsenceRow } from '../../core/services/absence';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 export enum AbsenceStatus {
     Pending = 1,
@@ -35,6 +38,9 @@ export enum AbsenceStatus {
         MatButtonModule,
         MatIconModule,
         MatChipsModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
     ],
 })
 export class Absences {
@@ -46,17 +52,36 @@ export class Absences {
 
     dataSource = new MatTableDataSource<AbsenceRow>([]);
 
+    search = '';
+    status: number | null = null;
+    from = '';
+    to = '';
+
+    sortBy = 'startDate';
+    desc = false;
+
     pageIndex = 0;
     pageSize = 5;
     totalCount = 0;
-    search = '';
 
     ngOnInit() {
         this.loadAbsences();
     }
 
     loadAbsences() {
-        this.absenceService.getAll(this.pageIndex + 1, this.pageSize, this.search).subscribe({
+        const params: any = {
+            page: this.pageIndex + 1,
+            limit: this.pageSize,
+            sortBy: this.sortBy,
+            desc: this.desc,
+        };
+
+        if (this.search) params.search = this.search;
+        if (this.status) params.status = this.status;
+        if (this.from) params.from = this.from;
+        if (this.to) params.to = this.to;
+
+        this.absenceService.getAll(params).subscribe({
             next: (res) => {
                 this.totalCount = res.totalCount;
 
@@ -82,10 +107,57 @@ export class Absences {
         this.loadAbsences();
     }
 
+    statusChanged(value: number | null) {
+        this.status = value;
+        this.pageIndex = 0;
+        this.loadAbsences();
+    }
+
+    fromChanged(event: any) {
+        this.from = event.value ? this.formatDate(event.value) : '';
+        this.pageIndex = 0;
+        this.loadAbsences();
+    }
+
+    toChanged(event: any) {
+        this.to = event.value ? this.formatDate(event.value) : '';
+        this.pageIndex = 0;
+        this.loadAbsences();
+    }
+
+    sort(column: string) {
+        if (this.sortBy === column) {
+            this.desc = !this.desc;
+        } else {
+            this.sortBy = column;
+            this.desc = false;
+        }
+
+        this.loadAbsences();
+    }
+
     onPageChange(event: PageEvent) {
         this.pageIndex = event.pageIndex;
         this.pageSize = event.pageSize;
 
         this.loadAbsences();
+    }
+
+    formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    }
+
+    isSorted(column: string): boolean {
+        return this.sortBy === column;
+    }
+
+    sortIcon(column: string): string {
+        if (this.sortBy !== column) return 'unfold_more';
+
+        return this.desc ? 'arrow_downward' : 'arrow_upward';
     }
 }
