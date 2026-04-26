@@ -50,7 +50,7 @@ export class Absences {
 
     AbsenceStatus = AbsenceStatus;
 
-    displayedColumns = ['name', 'surname', 'email', 'startDate', 'endDate', 'status'];
+    displayedColumns = ['name', 'surname', 'email', 'startDate', 'endDate', 'status', 'actions'];
 
     dataSource = new MatTableDataSource<AbsenceRow>([]);
 
@@ -168,5 +168,50 @@ export class Absences {
         if (this.sortBy !== column) return 'unfold_more';
 
         return this.desc ? 'arrow_downward' : 'arrow_upward';
+    }
+
+    approve(id: number) {
+        this.absenceService.approve(id).subscribe({
+            next: () => {
+                this.snackBar.open('Absence approved', '', {
+                    duration: 2500,
+                    horizontalPosition: 'end',
+                    verticalPosition: 'top',
+                    panelClass: ['success-snackbar'],
+                });
+
+                this.loadAbsences();
+            },
+            error: () => {
+                this.snackBar.open('Failed to approve', 'Close', {
+                    duration: 4000,
+                    horizontalPosition: 'end',
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar'],
+                });
+            },
+        });
+    }
+
+    reject(id: number) {
+        this.absenceService.reject(id).subscribe({
+            next: () => {
+                this.snackBar.open('Absence rejected', '', {
+                    duration: 2500,
+                    horizontalPosition: 'end',
+                    verticalPosition: 'top',
+                    panelClass: ['success-snackbar'],
+                });
+                this.loadAbsences();
+            },
+            error: () => {
+                this.snackBar.open('Failed to reject', 'Close', {
+                    duration: 4000,
+                    horizontalPosition: 'end',
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar'],
+                });
+            },
+        });
     }
 }

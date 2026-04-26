@@ -51,4 +51,12 @@ export class Absence {
             params,
         });
     }
+
+    approve(id: number) {
+        return this.http.patch(`${this.api}/${id}/approve`, {});
+    }
+
+    reject(id: number) {
+        return this.http.patch(`${this.api}/${id}/reject`, {});
+    }
 }

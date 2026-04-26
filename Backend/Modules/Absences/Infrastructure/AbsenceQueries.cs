@@ -84,7 +84,9 @@ public class AbsenceQueries : IAbsenceQueries
 
             _ => query.Desc
                 ? dbQuery.OrderByDescending(x => x.Absence.StartDate)
+                        .ThenByDescending(x => x.Absence.Id)
                 : dbQuery.OrderBy(x => x.Absence.StartDate)
+                        .ThenBy(x => x.Absence.Id)
         };
 
         var page = query.Page < 1 ? 1 : query.Page;
