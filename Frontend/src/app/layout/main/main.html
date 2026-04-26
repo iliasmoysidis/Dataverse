@@ -1,22 +1,27 @@
-<div class="layout">
-    <!-- Top Navbar -->
-    <header class="topbar">
-        <div class="brand">Dataverse</div>
+<header class="navbar">
+    <div class="nav-left">
+        <span class="brand">Dataverse</span>
 
-        <!-- <nav class="nav-links">
-      <a routerLink="/absences" routerLinkActive="active">
-        Absences
-      </a>
-    </nav> -->
+        <!-- Absences -->
+        @if (isActive('/absences')) {
+            <span class="nav-link active-link disabled-link"> Absences </span>
+        } @else {
+            <a routerLink="/absences" class="nav-link"> Absences </a>
+        }
 
-        <button mat-raised-button color="warn" (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            Logout
-        </button>
-    </header>
+        <!-- Request Absence -->
+        @if (isActive('/request-absence')) {
+            <span class="nav-link active-link disabled-link"> Request Absence </span>
+        } @else {
+            <a routerLink="/request-absence" class="nav-link"> Request Absence </a>
+        }
+    </div>
 
-    <!-- Main Content -->
-    <main class="content">
-        <router-outlet></router-outlet>
-    </main>
-</div>
+    <div class="nav-right">
+        <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    </div>
+</header>
+
+<main class="layout-content">
+    <router-outlet></router-outlet>
+</main>

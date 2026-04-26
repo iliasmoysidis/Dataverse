@@ -18,4 +18,8 @@ export class Main {
         this.auth.logout();
         this.router.navigate(['/login'], { replaceUrl: true });
     }
+
+    isActive(url: string): boolean {
+        return this.router.url === url;
+    }
 }

@@ -6,6 +6,7 @@ import { Public } from './layout/public/public';
 import { guestGuard } from './core/guards/guest.guard';
 import { Main } from './layout/main/main';
 import { authGuard } from './core/guards/auth.guard';
+import { CreateAbsence } from './pages/create-absence/create-absence';
 
 export const routes: Routes = [
     {
@@ -40,6 +41,10 @@ export const routes: Routes = [
                 path: 'absences',
                 component: Absences,
             },
+            {
+                path: 'request-absence',
+                component: CreateAbsence
+            }
         ],
     },
 

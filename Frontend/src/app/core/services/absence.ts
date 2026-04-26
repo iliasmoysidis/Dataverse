@@ -59,4 +59,8 @@ export class Absence {
     reject(id: number) {
         return this.http.patch(`${this.api}/${id}/reject`, {});
     }
+
+    create(payload: {startDate: string; endDate: string}) {
+        return this.http.post(this.api, payload);
+    }
 }

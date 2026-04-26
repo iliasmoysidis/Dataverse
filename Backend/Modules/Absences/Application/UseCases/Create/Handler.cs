@@ -1,3 +1,4 @@
+using Backend.Exceptions;
 using Backend.Modules.Absences.Application.Ports;
 using Backend.Modules.Absences.Domain;
 using Backend.Shared;
@@ -15,10 +16,21 @@ public sealed class CreateAbsenceHandler
         _uow = uow;
     }
 
-    public Task<CreateAbsenceResult> Handle(CreateAbsenceCommand command, CancellationToken ct)
+    public async Task<CreateAbsenceResult> Handle(CreateAbsenceCommand command, CancellationToken ct)
     {
-        return _uow.ExecuteAsync(async () =>
+        return await _uow.ExecuteAsync(async () =>
         {
+
+            var overlap = await _repo.ExistsOverlappingAsync(
+                command.UserId,
+                command.StartDate,
+                command.EndDate,
+                ct
+            );
+
+            if (overlap)
+                throw new OverlappingAbsenceException();
+
             var absence = Absence.Create(
                 command.UserId,
                 command.StartDate,
