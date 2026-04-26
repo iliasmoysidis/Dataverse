@@ -16,6 +16,7 @@ import { Absence, AbsenceRow } from '../../core/services/absence';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export enum AbsenceStatus {
     Pending = 1,
@@ -45,6 +46,7 @@ export enum AbsenceStatus {
 })
 export class Absences {
     private absenceService = inject(Absence);
+    private snackBar = inject(MatSnackBar);
 
     AbsenceStatus = AbsenceStatus;
 
@@ -96,7 +98,14 @@ export class Absences {
                 }));
             },
             error: (err) => {
-                console.error(err);
+                const message = err.error?.message ?? 'Failed to load absences';
+
+                this.snackBar.open(message, 'Close', {
+                    duration: 4000,
+                    horizontalPosition: 'end',
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar'],
+                });
             },
         });
     }
