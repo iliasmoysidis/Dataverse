@@ -49,13 +49,14 @@ export class Absences {
     pageIndex = 0;
     pageSize = 5;
     totalCount = 0;
+    search = '';
 
     ngOnInit() {
         this.loadAbsences();
     }
 
     loadAbsences() {
-        this.absenceService.getAll(this.pageIndex + 1, this.pageSize).subscribe({
+        this.absenceService.getAll(this.pageIndex + 1, this.pageSize, this.search).subscribe({
             next: (res) => {
                 this.totalCount = res.totalCount;
 
@@ -76,8 +77,9 @@ export class Absences {
     }
 
     applyFilter(event: Event) {
-        const value = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = value.trim().toLowerCase();
+        this.search = (event.target as HTMLInputElement).value.trim();
+        this.pageIndex = 0;
+        this.loadAbsences();
     }
 
     onPageChange(event: PageEvent) {

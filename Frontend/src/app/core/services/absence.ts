@@ -3,29 +3,29 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface PagedResult<T> {
-  items: T[];
-  page: number;
-  limit: number;
-  totalCount: number;
-  totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
+    items: T[];
+    page: number;
+    limit: number;
+    totalCount: number;
+    totalPages: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
 }
 
 export interface AbsenceDto {
-  id: number;
-  startDate: string;
-  endDate: string;
-  status: number;
-  user: UserDto;
+    id: number;
+    startDate: string;
+    endDate: string;
+    status: number;
+    user: UserDto;
 }
 
 export interface UserDto {
-  id: number;
-  email: string;
-  name: string;
-  surname: string;
-  role: number;
+    id: number;
+    email: string;
+    name: string;
+    surname: string;
+    role: number;
 }
 
 export interface AbsenceRow {
@@ -46,7 +46,13 @@ export class Absence {
 
     private api = 'http://localhost:5021/api/absences';
 
-    getAll(page = 1, limit = 5): Observable<PagedResult<AbsenceDto>> {
-        return this.http.get<PagedResult<AbsenceDto>>(`${this.api}?page=${page}&limit=${limit}`);
+    getAll(page = 1, limit = 5, search = ''): Observable<PagedResult<AbsenceDto>> {
+        return this.http.get<PagedResult<AbsenceDto>>(`${this.api}`, {
+            params: {
+                page,
+                limit,
+                search,
+            },
+        });
     }
 }
