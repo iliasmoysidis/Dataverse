@@ -1,7 +1,9 @@
 .page {
+    min-height: calc(100vh - 120px);
+
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
 .request-card {

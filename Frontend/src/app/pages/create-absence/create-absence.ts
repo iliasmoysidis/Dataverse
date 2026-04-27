@@ -35,6 +35,8 @@ export class CreateAbsence {
     private snackBar = inject(MatSnackBar);
     private router = inject(Router);
 
+    today = new Date();
+
     submitted = false;
 
     form = this.fb.group(
