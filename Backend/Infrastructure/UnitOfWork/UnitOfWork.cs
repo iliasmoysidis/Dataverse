@@ -1,7 +1,6 @@
 using Backend.Exceptions;
-using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Backend.Shared;
+namespace Backend.Infrastructure.UnitOfWork;
 
 public sealed class UnitOfWork : IUnitOfWork
 {

@@ -1,4 +1,4 @@
-namespace Backend.Shared;
+namespace Backend.Infrastructure.UnitOfWork;
 
 public interface IUnitOfWork
 {

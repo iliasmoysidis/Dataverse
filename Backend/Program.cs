@@ -9,7 +9,7 @@ using Backend.Modules.Users.Application;
 using Backend.Modules.Users.Application.UseCases.Register;
 using Backend.Modules.Users.Infrastructure;
 using Backend.Modules.Users.Application.Ports;
-using Backend.Shared;
+using Backend.Infrastructure.UnitOfWork;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;

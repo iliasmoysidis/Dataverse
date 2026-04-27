@@ -1,6 +1,6 @@
 using Backend.Modules.Absences.Application.Exceptions;
 using Backend.Modules.Absences.Application.Ports;
-using Backend.Shared;
+using Backend.Infrastructure.UnitOfWork;
 
 namespace Backend.Modules.Absences.Application.UseCases.Cancel;
 

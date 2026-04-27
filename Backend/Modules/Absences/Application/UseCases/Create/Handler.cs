@@ -1,7 +1,7 @@
 using Backend.Exceptions;
 using Backend.Modules.Absences.Application.Ports;
 using Backend.Modules.Absences.Domain;
-using Backend.Shared;
+using Backend.Infrastructure.UnitOfWork;
 
 namespace Backend.Modules.Absences.Application.UseCases.Create;
 
