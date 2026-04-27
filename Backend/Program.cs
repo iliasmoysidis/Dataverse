@@ -99,7 +99,11 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("Default")
+        builder.Configuration.GetConnectionString("Default"),
+        b =>
+        {
+            b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+        }
     );
 });
 
