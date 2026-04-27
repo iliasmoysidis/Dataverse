@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface PagedResult<T> {
     items: T[];
@@ -45,7 +46,7 @@ export interface AbsenceRow {
 export class Absence {
     private http = inject(HttpClient);
 
-    private api = 'http://localhost:5021/api/absences';
+    private api = `${environment.apiUrl}/absences`
 
     getAll(params: any): Observable<PagedResult<AbsenceDto>> {
         return this.http.get<PagedResult<AbsenceDto>>(this.api, {
