@@ -50,7 +50,10 @@ namespace Backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("absences", (string)null);
+                    b.ToTable("absences", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_absences_status", "status in (1,2,3,4)");
+                        });
                 });
 
             modelBuilder.Entity("Backend.Modules.Users.Domain.User", b =>
@@ -68,7 +71,10 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_users_role", "role IN (1,2)");
+                        });
                 });
 
             modelBuilder.Entity("Backend.Modules.Absences.Domain.Absence", b =>

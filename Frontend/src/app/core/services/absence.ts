@@ -30,6 +30,7 @@ export interface UserDto {
 
 export interface AbsenceRow {
     id: number;
+    userId: number;
     name: string;
     surname: string;
     email: string;
@@ -60,7 +61,11 @@ export class Absence {
         return this.http.patch(`${this.api}/${id}/reject`, {});
     }
 
-    create(payload: {startDate: string; endDate: string}) {
+    cancel(id: number): Observable<any> {
+        return this.http.patch(`${this.api}/${id}/cancel`, {});
+    }
+
+    create(payload: { startDate: string; endDate: string }) {
         return this.http.post(this.api, payload);
     }
 }

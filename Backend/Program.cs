@@ -23,6 +23,7 @@ using System.Text;
 using Backend.Modules.Absences.Application.UseCases.Search;
 using Microsoft.OpenApi.Models;
 using Backend.Infrastructure.Seeds;
+using Backend.Modules.Absences.Application.UseCases.Cancel;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -117,6 +118,7 @@ builder.Services.AddScoped<CreateAbsenceHandler>();
 builder.Services.AddScoped<ApproveAbsenceHandler>();
 builder.Services.AddScoped<RejectAbsenceHandler>();
 builder.Services.AddScoped<SearchAbsencesHandler>();
+builder.Services.AddScoped<CancelAbsenceHandler>();
 
 
 builder.Services.AddEndpointsApiExplorer();

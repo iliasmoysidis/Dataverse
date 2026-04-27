@@ -12,16 +12,25 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 
-import { Absence, AbsenceRow } from '../../core/services/absence';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { Absence, AbsenceRow } from '../../core/services/absence';
+import { Auth } from '../../core/services/auth';
 
 export enum AbsenceStatus {
     Pending = 1,
     Approved = 2,
     Rejected = 3,
+    Canceled = 4,
+}
+
+export enum Role {
+    Employee = 1,
+    Manager = 2,
 }
 
 @Component({
@@ -47,8 +56,10 @@ export enum AbsenceStatus {
 export class Absences {
     private absenceService = inject(Absence);
     private snackBar = inject(MatSnackBar);
+    private auth = inject(Auth);
 
     AbsenceStatus = AbsenceStatus;
+    Role = Role;
 
     displayedColumns = ['name', 'surname', 'email', 'startDate', 'endDate', 'status', 'actions'];
 
@@ -65,6 +76,12 @@ export class Absences {
     pageIndex = 0;
     pageSize = 5;
     totalCount = 0;
+
+    role = this.auth.getRole();
+    currentUserId = this.auth.getUserId();
+
+    isEmployee = this.auth.isEmployee();
+    isManager = this.auth.isManager();
 
     ngOnInit() {
         this.loadAbsences();
@@ -89,6 +106,7 @@ export class Absences {
 
                 this.dataSource.data = res.items.map((x) => ({
                     id: x.id,
+                    userId: x.user.id,
                     name: x.user.name,
                     surname: x.user.surname,
                     email: x.user.email,
@@ -100,18 +118,14 @@ export class Absences {
             error: (err) => {
                 const message = err.error?.message ?? 'Failed to load absences';
 
-                this.snackBar.open(message, 'Close', {
-                    duration: 4000,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['error-snackbar'],
-                });
+                this.showError(message);
             },
         });
     }
 
     applyFilter(event: Event) {
         this.search = (event.target as HTMLInputElement).value.trim();
+
         this.pageIndex = 0;
         this.loadAbsences();
     }
@@ -124,12 +138,14 @@ export class Absences {
 
     fromChanged(event: any) {
         this.from = event.value ? this.formatDate(event.value) : '';
+
         this.pageIndex = 0;
         this.loadAbsences();
     }
 
     toChanged(event: any) {
         this.to = event.value ? this.formatDate(event.value) : '';
+
         this.pageIndex = 0;
         this.loadAbsences();
     }
@@ -152,16 +168,47 @@ export class Absences {
         this.loadAbsences();
     }
 
+    approve(id: number) {
+        this.absenceService.approve(id).subscribe({
+            next: () => {
+                this.showSuccess('Absence approved');
+                this.loadAbsences();
+            },
+            error: () => this.showError('Failed to approve'),
+        });
+    }
+
+    reject(id: number) {
+        this.absenceService.reject(id).subscribe({
+            next: () => {
+                this.showSuccess('Absence rejected');
+                this.loadAbsences();
+            },
+            error: () => this.showError('Failed to reject'),
+        });
+    }
+
+    cancel(id: number) {
+        this.absenceService.cancel(id).subscribe({
+            next: () => {
+                this.showSuccess('Absence canceled');
+                this.loadAbsences();
+            },
+            error: (err) => {
+                const message = err.error?.message ?? 'Failed to cancel';
+
+                this.showError(message);
+            },
+        });
+    }
+
     formatDate(date: Date): string {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
+
         const day = String(date.getDate()).padStart(2, '0');
 
         return `${year}-${month}-${day}`;
-    }
-
-    isSorted(column: string): boolean {
-        return this.sortBy === column;
     }
 
     sortIcon(column: string): string {
@@ -170,48 +217,21 @@ export class Absences {
         return this.desc ? 'arrow_downward' : 'arrow_upward';
     }
 
-    approve(id: number) {
-        this.absenceService.approve(id).subscribe({
-            next: () => {
-                this.snackBar.open('Absence approved', '', {
-                    duration: 2500,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['success-snackbar'],
-                });
-
-                this.loadAbsences();
-            },
-            error: () => {
-                this.snackBar.open('Failed to approve', 'Close', {
-                    duration: 4000,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['error-snackbar'],
-                });
-            },
+    private showSuccess(message: string) {
+        this.snackBar.open(message, '', {
+            duration: 2500,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            panelClass: ['success-snackbar'],
         });
     }
 
-    reject(id: number) {
-        this.absenceService.reject(id).subscribe({
-            next: () => {
-                this.snackBar.open('Absence rejected', '', {
-                    duration: 2500,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['success-snackbar'],
-                });
-                this.loadAbsences();
-            },
-            error: () => {
-                this.snackBar.open('Failed to reject', 'Close', {
-                    duration: 4000,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['error-snackbar'],
-                });
-            },
+    private showError(message: string) {
+        this.snackBar.open(message, 'Close', {
+            duration: 4000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar'],
         });
     }
 }

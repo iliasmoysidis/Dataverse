@@ -74,5 +74,7 @@ public class Absence
     {
         if (Status != Status.Pending)
             throw new InvalidAbsenceStatusTransitionException();
+
+        Status = Status.Canceled;
     }
 }

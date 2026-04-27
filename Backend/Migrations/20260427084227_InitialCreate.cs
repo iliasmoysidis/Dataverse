@@ -27,6 +27,7 @@ namespace Backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.id);
+                    table.CheckConstraint("CK_users_role", "role IN (1,2)");
                 });
 
             migrationBuilder.CreateTable(
@@ -43,6 +44,7 @@ namespace Backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_absences", x => x.id);
+                    table.CheckConstraint("CK_absences_status", "status in (1,2,3,4)");
                     table.ForeignKey(
                         name: "FK_absences_users_user_id",
                         column: x => x.user_id,

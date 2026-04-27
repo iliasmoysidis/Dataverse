@@ -104,9 +104,12 @@ public sealed class AbsencesController : ControllerBase
     [FromQuery] SearchAbsencesQuery query,
     CancellationToken ct)
     {
-        var currentUserId = int.Parse(
-            User.FindFirstValue(ClaimTypes.NameIdentifier)!
-        );
+        var userIdClaim =
+            User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? User.FindFirst("sub")?.Value
+            ?? throw new UnauthorizedAccessException("User id claim missing.");
+
+        var currentUserId = int.Parse(userIdClaim);
 
         var isManager = User.IsInRole("Manager");
 

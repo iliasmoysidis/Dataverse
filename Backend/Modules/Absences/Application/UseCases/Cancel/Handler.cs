@@ -30,7 +30,7 @@ public sealed class CancelAbsenceHandler
             if (absence == null)
                 throw new AbsenceNotFoundException();
 
-            if (absence.Id != command.CurrentUserId)
+            if (absence.UserId != command.CurrentUserId)
                 throw new CannotCancelOtherUsersAbsenceException();
 
             absence.Cancel();
