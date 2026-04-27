@@ -1,6 +1,7 @@
+using Backend.Modules.Users.Api.Requests;
 using FluentValidation;
 
-namespace Backend.Modules.Users.Api.Register;
+namespace Backend.Modules.Users.Api.Validators;
 
 public sealed class RegisterUserValidator
     : AbstractValidator<RegisterUserRequest>

@@ -1,5 +1,4 @@
-using Backend.Modules.Users.Api.Login;
-using Backend.Modules.Users.Api.Register;
+using Backend.Modules.Users.Api.Requests;
 using Backend.Modules.Users.Application.UseCases.Login;
 using Backend.Modules.Users.Application.UseCases.Register;
 using Backend.Modules.Users.Domain;
@@ -22,7 +21,10 @@ public sealed class UsersController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserRequest request, CancellationToken ct)
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterUserRequest request,
+         CancellationToken ct
+    )
     {
         var command = new RegisterUserCommand(
             request.Email,

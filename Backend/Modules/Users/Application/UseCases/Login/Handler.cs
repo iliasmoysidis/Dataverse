@@ -1,6 +1,6 @@
-using Backend.Modules.Users.Application.Auth;
 using Backend.Modules.Users.Application.Exceptions;
 using Backend.Modules.Users.Application.Ports;
+using Backend.Modules.Users.Application.Security;
 
 namespace Backend.Modules.Users.Application.UseCases.Login;
 

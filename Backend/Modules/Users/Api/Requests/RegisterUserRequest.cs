@@ -1,4 +1,4 @@
-namespace Backend.Modules.Users.Api.Register;
+namespace Backend.Modules.Users.Api.Requests;
 
 public sealed record RegisterUserRequest(
     string Email,

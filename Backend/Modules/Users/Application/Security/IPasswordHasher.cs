@@ -1,4 +1,4 @@
-namespace Backend.Modules.Users.Application;
+namespace Backend.Modules.Users.Security;
 
 public interface IPasswordHasher
 {

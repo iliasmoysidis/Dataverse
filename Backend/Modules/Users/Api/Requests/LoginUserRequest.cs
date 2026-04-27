@@ -1,4 +1,4 @@
-namespace Backend.Modules.Users.Api.Login;
+namespace Backend.Modules.Users.Api.Requests;
 
 public sealed record LoginUserRequest(
     string Email,

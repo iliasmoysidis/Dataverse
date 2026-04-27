@@ -1,11 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Backend.Modules.Users.Application.Auth;
 using Backend.Modules.Users.Domain;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Backend.Modules.Users.Application.Security;
 
-namespace Backend.Modules.Users.Infrastructure.Auth;
+namespace Backend.Modules.Users.Infrastructure.Security;
 
 public sealed class JwtProvider : IJwtProvider
 {

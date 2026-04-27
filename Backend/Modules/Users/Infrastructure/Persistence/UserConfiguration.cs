@@ -2,7 +2,7 @@ using Backend.Modules.Users.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Backend.Modules.Users.Infrastructure;
+namespace Backend.Modules.Users.Infrastructure.Persistence;
 
 public sealed class UserConfiguration
     : IEntityTypeConfiguration<User>

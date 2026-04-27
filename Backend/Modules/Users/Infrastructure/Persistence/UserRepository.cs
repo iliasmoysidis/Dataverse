@@ -3,7 +3,7 @@ using Backend.Modules.Users.Domain.ValueObjects;
 using Backend.Modules.Users.Application.Ports;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Modules.Users.Infrastructure;
+namespace Backend.Modules.Users.Infrastructure.Persistence;
 
 public sealed class UserRepository : IUserRepository
 {

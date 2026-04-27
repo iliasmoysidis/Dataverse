@@ -2,6 +2,7 @@ using Backend.Modules.Users.Application.Exceptions;
 using Backend.Modules.Users.Application.Ports;
 using Backend.Modules.Users.Domain;
 using Backend.Infrastructure.UnitOfWork;
+using Backend.Modules.Users.Security;
 
 namespace Backend.Modules.Users.Application.UseCases.Register;
 

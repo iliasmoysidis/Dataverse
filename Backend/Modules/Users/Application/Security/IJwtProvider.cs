@@ -1,6 +1,6 @@
 using Backend.Modules.Users.Domain;
 
-namespace Backend.Modules.Users.Application.Auth;
+namespace Backend.Modules.Users.Application.Security;
 
 public interface IJwtProvider
 {

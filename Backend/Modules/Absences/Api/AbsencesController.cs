@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Backend.Modules.Absences.Api.Requests.Create;
+using Backend.Modules.Absences.Api.Requests;
 using Backend.Modules.Absences.Application.UseCases.Approve;
 using Backend.Modules.Absences.Application.UseCases.Cancel;
 using Backend.Modules.Absences.Application.UseCases.Create;

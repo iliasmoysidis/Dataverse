@@ -1,6 +1,6 @@
-using Backend.Modules.Users.Application;
+using Backend.Modules.Users.Security;
 
-namespace Backend.Modules.Users.Infrastructure;
+namespace Backend.Modules.Users.Infrastructure.Security;
 
 public sealed class BCryptPasswordHasher : IPasswordHasher
 {

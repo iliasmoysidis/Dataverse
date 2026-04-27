@@ -1,7 +1,7 @@
-using Backend.Modules.Absences.Api.Requests.Create;
+using Backend.Modules.Absences.Api.Requests;
 using FluentValidation;
 
-namespace Backend.Modules.Absences.Api.Create;
+namespace Backend.Modules.Absences.Api.Validators;
 
 public sealed class CreateAbsenceValidator
     : AbstractValidator<CreateAbsenceRequest>

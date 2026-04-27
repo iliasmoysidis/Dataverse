@@ -1,4 +1,4 @@
-namespace Backend.Modules.Absences.Api.Requests.Create;
+namespace Backend.Modules.Absences.Api.Requests;
 
 public sealed record CreateAbsenceRequest(
     DateOnly StartDate,
