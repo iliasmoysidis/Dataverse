@@ -9,7 +9,12 @@ public sealed class UserConfiguration
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("users");
+        builder.ToTable("users", table =>
+        {
+            var allowedRoles = string.Join(",", Enum.GetValues<Role>().Cast<int>());
+
+            table.HasCheckConstraint("CK_users_role", $"role IN ({allowedRoles})");
+        });
 
         builder.HasKey(x => x.Id);
 
@@ -49,6 +54,7 @@ public sealed class UserConfiguration
 
         builder.Property(x => x.Role)
             .HasColumnName("role")
+            .HasConversion<int>()
             .IsRequired();
     }
 }

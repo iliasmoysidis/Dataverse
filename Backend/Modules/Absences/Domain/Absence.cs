@@ -69,4 +69,10 @@ public class Absence
 
         Status = Status.Rejected;
     }
+
+    public void Cancel()
+    {
+        if (Status != Status.Pending)
+            throw new InvalidAbsenceStatusTransitionException();
+    }
 }

@@ -9,7 +9,15 @@ public sealed class AbsenceConfiguration : IEntityTypeConfiguration<Absence>
 {
     public void Configure(EntityTypeBuilder<Absence> builder)
     {
-        builder.ToTable("absences");
+        builder.ToTable("absences", table =>
+        {
+            var allowedStatuses = string.Join(",", Enum.GetValues<Status>().Cast<int>());
+
+            table.HasCheckConstraint(
+                "CK_absences_status",
+                $"status in ({allowedStatuses})"
+            );
+        });
 
         builder.HasKey(x => x.Id);
 

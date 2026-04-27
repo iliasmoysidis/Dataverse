@@ -2,21 +2,24 @@ using Backend.Modules.Absences.Application.Exceptions;
 using Backend.Modules.Absences.Application.Ports;
 using Backend.Shared;
 
-namespace Backend.Modules.Absences.Application.UseCases.Approve;
+namespace Backend.Modules.Absences.Application.UseCases.Cancel;
 
-public sealed class ApproveAbsenceHandler
+public sealed class CancelAbsenceHandler
 {
     private readonly IAbsenceRepository _repo;
     private readonly IUnitOfWork _uow;
 
-    public ApproveAbsenceHandler(IAbsenceRepository repo, IUnitOfWork uow)
+    public CancelAbsenceHandler(
+        IAbsenceRepository repo,
+        IUnitOfWork uow
+    )
     {
         _repo = repo;
         _uow = uow;
     }
 
-    public async Task<ApproveAbsenceResult> Handle(
-        ApproveAbsenceCommand command,
+    public async Task<CancelAbsenceResult> Handle(
+        CancelAbsenceCommand command,
         CancellationToken ct
     )
     {
@@ -27,16 +30,18 @@ public sealed class ApproveAbsenceHandler
             if (absence == null)
                 throw new AbsenceNotFoundException();
 
-            absence.Approve();
+            if (absence.Id != command.CurrentUserId)
+                throw new CannotCancelOtherUsersAbsenceException();
 
-            return new ApproveAbsenceResult(
+            absence.Cancel();
+
+            return new CancelAbsenceResult(
                 absence.Id,
                 absence.UserId,
                 absence.StartDate,
                 absence.EndDate,
                 (int)absence.Status
             );
-
         }, ct);
     }
 }
