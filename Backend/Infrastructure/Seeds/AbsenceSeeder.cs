@@ -21,25 +21,52 @@ public static class AbsenceSeeder
 
         foreach (var user in employees)
         {
-            // 3 absences per employee
-            for (int i = 0; i < 3; i++)
+            var existingRanges = new List<(DateOnly Start, DateOnly End, int Status)>();
+
+            for (int i = 0; i < 6; i++)
             {
-                var startOffset = random.Next(2, 60);
-                var duration = random.Next(1, 8);
+                var created = false;
 
-                var start = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(startOffset));
-                var end = start.AddDays(duration);
+                while (!created)
+                {
+                    var startOffset = random.Next(1, 160);
+                    var duration = random.Next(1, 8);
 
-                var absence = Absence.Create(user.Id, start, end);
+                    var start = DateOnly.FromDateTime(
+                        DateTime.UtcNow.AddDays(startOffset)
+                    );
 
-                var statusRoll = random.Next(1, 4);
+                    var end = start.AddDays(duration);
 
-                if (statusRoll == 2)
-                    absence.Approve();
-                else if (statusRoll == 3)
-                    absence.Reject();
+                    var statusRoll = random.Next(1, 4); // 1 pending 2 approved 3 rejected
 
-                absences.Add(absence);
+                    var newStatus =
+                        statusRoll == 2 ? 2 :
+                        statusRoll == 3 ? 3 : 1;
+
+                    var overlaps = existingRanges.Any(x =>
+                        (x.Status == 1 || x.Status == 2) &&
+                        (newStatus == 1 || newStatus == 2) &&
+                        start <= x.End &&
+                        end >= x.Start
+                    );
+
+                    if (overlaps)
+                        continue;
+
+                    var absence = Absence.Create(user.Id, start, end);
+
+                    if (newStatus == 2)
+                        absence.Approve();
+                    else if (newStatus == 3)
+                        absence.Reject();
+
+                    absences.Add(absence);
+
+                    existingRanges.Add((start, end, newStatus));
+
+                    created = true;
+                }
             }
         }
 
