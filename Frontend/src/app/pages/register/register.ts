@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import {
-    FormBuilder,
-    FormsModule,
     NonNullableFormBuilder,
     ReactiveFormsModule,
     Validators,
@@ -16,6 +14,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { roleValidator } from '../../shared/validators/role';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-register',
@@ -37,6 +36,7 @@ export class Register {
     private auth = inject(AuthService);
     private router = inject(Router);
     private snackBar = inject(MatSnackBar);
+    private destroyRef = inject(DestroyRef)
 
     submitted = false;
     serverError = '';
@@ -57,29 +57,32 @@ export class Register {
         }
         const payload = this.form.getRawValue();
 
-        this.auth.register(payload).subscribe({
-            next: () => {
-                this.snackBar.open('Account created successfully', '', {
-                    duration: 1500,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['success-snackbar'],
-                });
+        this.auth
+            .register(payload)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: () => {
+                    this.snackBar.open('Account created successfully', '', {
+                        duration: 1500,
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top',
+                        panelClass: ['success-snackbar'],
+                    });
 
-                setTimeout(() => {
-                    this.router.navigate(['/login'], { replaceUrl: true });
-                }, 1500);
-            },
-            error: (err) => {
-                const message = err.error?.message ?? 'Registration failed';
+                    setTimeout(() => {
+                        this.router.navigate(['/login'], { replaceUrl: true });
+                    }, 1500);
+                },
+                error: (err) => {
+                    const message = err.error?.message ?? 'Registration failed';
 
-                this.snackBar.open(message, 'Close', {
-                    duration: 4000,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['error-snackbar'],
-                });
-            },
-        });
+                    this.snackBar.open(message, 'Close', {
+                        duration: 4000,
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top',
+                        panelClass: ['error-snackbar'],
+                    });
+                },
+            });
     }
 }

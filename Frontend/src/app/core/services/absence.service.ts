@@ -46,7 +46,7 @@ export interface AbsenceRow {
 export class AbsenceService {
     private http = inject(HttpClient);
 
-    private api = `${environment.apiUrl}/absences`
+    private api = `${environment.apiUrl}/absences`;
 
     getAll(params: any): Observable<PagedResult<AbsenceDto>> {
         return this.http.get<PagedResult<AbsenceDto>>(this.api, {

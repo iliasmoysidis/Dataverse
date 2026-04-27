@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import {
     FormsModule,
     NonNullableFormBuilder,
@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-login',
@@ -34,6 +35,7 @@ export class Login {
     private auth = inject(AuthService);
     private snackBar = inject(MatSnackBar);
     private router = inject(Router);
+    private destroyRef = inject(DestroyRef);
 
     submitted = false;
 
@@ -53,29 +55,32 @@ export class Login {
         }
 
         const payload = this.form.getRawValue();
-        this.auth.login(payload).subscribe({
-            next: (res) => {
-                localStorage.setItem('token', res.token);
+        this.auth
+            .login(payload)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (res) => {
+                    localStorage.setItem('token', res.token);
 
-                this.router.navigate(['/absences']);
+                    this.router.navigate(['/absences']);
 
-                this.snackBar.open('Login successful', '', {
-                    duration: 1500,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['success-snackbar'],
-                });
-            },
-            error: (err) => {
-                const message = err.error?.message ?? 'Invalid credentials';
+                    this.snackBar.open('Login successful', '', {
+                        duration: 1500,
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top',
+                        panelClass: ['success-snackbar'],
+                    });
+                },
+                error: (err) => {
+                    const message = err.error?.message ?? 'Invalid credentials';
 
-                this.snackBar.open(message, 'Close', {
-                    duration: 4000,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['error-snackbar'],
-                });
-            },
-        });
+                    this.snackBar.open(message, 'Close', {
+                        duration: 4000,
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top',
+                        panelClass: ['error-snackbar'],
+                    });
+                },
+            });
     }
 }

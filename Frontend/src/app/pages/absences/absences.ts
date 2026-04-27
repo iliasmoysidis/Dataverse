@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AbsenceRow, AbsenceService } from '../../core/services/absence.service';
 import { AuthService } from '../../core/services/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export enum AbsenceStatus {
     Pending = 1,
@@ -57,6 +58,7 @@ export class Absences {
     private absenceService = inject(AbsenceService);
     private snackBar = inject(MatSnackBar);
     private auth = inject(AuthService);
+    private destroyRef = inject(DestroyRef);
 
     AbsenceStatus = AbsenceStatus;
     Role = Role;
@@ -100,27 +102,30 @@ export class Absences {
         if (this.from) params.from = this.from;
         if (this.to) params.to = this.to;
 
-        this.absenceService.getAll(params).subscribe({
-            next: (res) => {
-                this.totalCount = res.totalCount;
+        this.absenceService
+            .getAll(params)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (res) => {
+                    this.totalCount = res.totalCount;
 
-                this.dataSource.data = res.items.map((x) => ({
-                    id: x.id,
-                    userId: x.user.id,
-                    name: x.user.name,
-                    surname: x.user.surname,
-                    email: x.user.email,
-                    startDate: x.startDate,
-                    endDate: x.endDate,
-                    status: x.status,
-                }));
-            },
-            error: (err) => {
-                const message = err.error?.message ?? 'Failed to load absences';
+                    this.dataSource.data = res.items.map((x) => ({
+                        id: x.id,
+                        userId: x.user.id,
+                        name: x.user.name,
+                        surname: x.user.surname,
+                        email: x.user.email,
+                        startDate: x.startDate,
+                        endDate: x.endDate,
+                        status: x.status,
+                    }));
+                },
+                error: (err) => {
+                    const message = err.error?.message ?? 'Failed to load absences';
 
-                this.showError(message);
-            },
-        });
+                    this.showError(message);
+                },
+            });
     }
 
     applyFilter(event: Event) {
@@ -169,37 +174,46 @@ export class Absences {
     }
 
     approve(id: number) {
-        this.absenceService.approve(id).subscribe({
-            next: () => {
-                this.showSuccess('Absence approved');
-                this.loadAbsences();
-            },
-            error: () => this.showError('Failed to approve'),
-        });
+        this.absenceService
+            .approve(id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: () => {
+                    this.showSuccess('Absence approved');
+                    this.loadAbsences();
+                },
+                error: () => this.showError('Failed to approve'),
+            });
     }
 
     reject(id: number) {
-        this.absenceService.reject(id).subscribe({
-            next: () => {
-                this.showSuccess('Absence rejected');
-                this.loadAbsences();
-            },
-            error: () => this.showError('Failed to reject'),
-        });
+        this.absenceService
+            .reject(id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: () => {
+                    this.showSuccess('Absence rejected');
+                    this.loadAbsences();
+                },
+                error: () => this.showError('Failed to reject'),
+            });
     }
 
     cancel(id: number) {
-        this.absenceService.cancel(id).subscribe({
-            next: () => {
-                this.showSuccess('Absence canceled');
-                this.loadAbsences();
-            },
-            error: (err) => {
-                const message = err.error?.message ?? 'Failed to cancel';
+        this.absenceService
+            .cancel(id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: () => {
+                    this.showSuccess('Absence canceled');
+                    this.loadAbsences();
+                },
+                error: (err) => {
+                    const message = err.error?.message ?? 'Failed to cancel';
 
-                this.showError(message);
-            },
-        });
+                    this.showError(message);
+                },
+            });
     }
 
     formatDate(date: Date): string {

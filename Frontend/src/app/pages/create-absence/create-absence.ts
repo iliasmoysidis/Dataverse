@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AbsenceService } from '../../core/services/absence.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-create-absence',
@@ -34,6 +35,7 @@ export class CreateAbsence {
     private absenceService = inject(AbsenceService);
     private snackBar = inject(MatSnackBar);
     private router = inject(Router);
+    private destroyRef = inject(DestroyRef);
 
     today = new Date();
 
@@ -59,27 +61,30 @@ export class CreateAbsence {
             endDate: this.formatDate(raw.endDate!),
         };
 
-        this.absenceService.create(payload).subscribe({
-            next: () => {
-                this.snackBar.open('Absence request created', '', {
-                    duration: 2500,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['success-snackbar'],
-                });
-                this.router.navigate(['/absences'], { replaceUrl: true });
-            },
-            error: (err) => {
-                const message = err.error?.message ?? 'Failed to create absence request';
+        this.absenceService
+            .create(payload)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: () => {
+                    this.snackBar.open('Absence request created', '', {
+                        duration: 2500,
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top',
+                        panelClass: ['success-snackbar'],
+                    });
+                    this.router.navigate(['/absences'], { replaceUrl: true });
+                },
+                error: (err) => {
+                    const message = err.error?.message ?? 'Failed to create absence request';
 
-                this.snackBar.open(message, 'Close', {
-                    duration: 4000,
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    panelClass: ['error-snackbar'],
-                });
-            },
-        });
+                    this.snackBar.open(message, 'Close', {
+                        duration: 4000,
+                        horizontalPosition: 'end',
+                        verticalPosition: 'top',
+                        panelClass: ['error-snackbar'],
+                    });
+                },
+            });
     }
 
     formatDate(date: Date): string {

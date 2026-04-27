@@ -34,7 +34,11 @@ export class AuthService {
     }
 
     isLoggedIn(): boolean {
-        return !!this.getToken();
+        const payload = this.getPayload();
+
+        if (!payload?.exp) return false;
+
+        return Date.now() < payload.exp * 1000;
     }
 
     getPayload(): any {
