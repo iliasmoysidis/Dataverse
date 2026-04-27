@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { Auth } from '../../core/services/auth';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-main',
@@ -11,7 +11,7 @@ import { Auth } from '../../core/services/auth';
     styleUrl: './main.css',
 })
 export class Main {
-    private auth = inject(Auth);
+    private auth = inject(AuthService);
     private router = inject(Router);
 
     logout() {

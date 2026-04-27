@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../core/services/auth';
+import { AuthService } from '../../core/services/auth.service';
 import { roleValidator } from '../../shared/validators/role';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -34,7 +34,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class Register {
     private fb = inject(NonNullableFormBuilder);
-    private auth = inject(Auth);
+    private auth = inject(AuthService);
     private router = inject(Router);
     private snackBar = inject(MatSnackBar);
 

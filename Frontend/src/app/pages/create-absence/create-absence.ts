@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Absence } from '../../core/services/absence';
+import { AbsenceService } from '../../core/services/absence.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { dateRangeValidator } from '../../shared/validators/dateRange';
@@ -31,7 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 })
 export class CreateAbsence {
     fb = inject(FormBuilder);
-    private absenceService = inject(Absence);
+    private absenceService = inject(AbsenceService);
     private snackBar = inject(MatSnackBar);
     private router = inject(Router);
 

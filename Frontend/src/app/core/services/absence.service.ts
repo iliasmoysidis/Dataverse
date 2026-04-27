@@ -43,7 +43,7 @@ export interface AbsenceRow {
 @Injectable({
     providedIn: 'root',
 })
-export class Absence {
+export class AbsenceService {
     private http = inject(HttpClient);
 
     private api = `${environment.apiUrl}/absences`

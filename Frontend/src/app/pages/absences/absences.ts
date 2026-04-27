@@ -18,8 +18,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Absence, AbsenceRow } from '../../core/services/absence';
-import { Auth } from '../../core/services/auth';
+import { AbsenceRow, AbsenceService } from '../../core/services/absence.service';
+import { AuthService } from '../../core/services/auth.service';
 
 export enum AbsenceStatus {
     Pending = 1,
@@ -54,9 +54,9 @@ export enum Role {
     ],
 })
 export class Absences {
-    private absenceService = inject(Absence);
+    private absenceService = inject(AbsenceService);
     private snackBar = inject(MatSnackBar);
-    private auth = inject(Auth);
+    private auth = inject(AuthService);
 
     AbsenceStatus = AbsenceStatus;
     Role = Role;
